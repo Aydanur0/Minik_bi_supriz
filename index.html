@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bir Sürprizin Var... 💗</title>
+<link rel="icon" type="image/png" href="icon.png">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:Georgia,"Times New Roman",serif;
+  color:#fff;
+  background:
+    radial-gradient(circle at 20% 10%,rgba(255,90,170,.12),transparent 28%),
+    radial-gradient(circle at 80% 30%,rgba(110,70,255,.14),transparent 30%),
+    linear-gradient(135deg,#10051c,#21082f 45%,#0d0718);
+  overflow-x:hidden;
+}
+body.intro-active{overflow:hidden}
+button{font:inherit}
+section{position:relative;min-height:100vh;padding:100px 20px;display:flex;align-items:center;justify-content:center}
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0}
+.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:twinkle 2s infinite alternate}
+@keyframes twinkle{from{opacity:.15;transform:scale(.7)}to{opacity:1;transform:scale(1.5)}}
+.heart{position:fixed;bottom:-40px;z-index:2;pointer-events:none;animation:floatHeart 6s linear forwards}
+@keyframes floatHeart{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.8}100%{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+
+#intro{
+  position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 43%,rgba(170,0,20,.20),transparent 30%),
+    radial-gradient(circle at 12% 20%,rgba(120,0,10,.18),transparent 28%),
+    radial-gradient(circle at 88% 78%,rgba(170,0,20,.15),transparent 30%),
+    linear-gradient(135deg,#050505 0%,#100507 45%,#050505 100%);
+  transition:opacity 1s ease,visibility 1s ease;
+}
+#intro:before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;
+  background:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 5px),
+    linear-gradient(90deg,transparent 0 49.7%,rgba(170,0,20,.10) 49.8% 50.2%,transparent 50.3%);
+}
+#intro:after{
+  content:"";position:absolute;inset:7vh 4vw;border:1px solid rgba(150,0,20,.35);pointer-events:none;
+  box-shadow:inset 0 0 80px rgba(120,0,15,.10),0 0 35px rgba(120,0,15,.08);
+}
+#intro.hide{opacity:0;visibility:hidden;pointer-events:none}
+.intro-content{text-align:center;position:relative;z-index:3;width:min(1050px,92vw);padding:25px}
+.intro-small{
+  font-size:clamp(11px,1.3vw,16px);letter-spacing:6px;color:#b6b0b0;margin-bottom:22px;
+  opacity:.9;text-transform:uppercase;font-weight:bold
+}
+.intro-small:before,.intro-small:after{content:"";display:inline-block;width:75px;height:1px;background:#8f0015;vertical-align:middle;margin:0 18px;box-shadow:0 0 8px rgba(220,0,25,.5)}
+.count-title{
+  font-size:clamp(22px,3.2vw,42px);font-weight:bold;color:#eee;letter-spacing:7px;
+  text-shadow:0 0 18px rgba(190,0,25,.35);margin-bottom:28px
+}
+.flip-countdown{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2.2vw,28px);align-items:center}
+.time-box{
+  position:relative;height:clamp(145px,18vw,220px);border-radius:5px;overflow:hidden;
+  background:linear-gradient(145deg,rgba(20,8,10,.92),rgba(4,4,4,.96));
+  border:1px solid rgba(180,0,25,.75);
+  box-shadow:0 0 0 1px rgba(255,0,30,.05) inset,0 18px 55px rgba(0,0,0,.65),0 0 24px rgba(150,0,20,.10);
+}
+.time-box:before{
+  content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 0 35%,rgba(255,255,255,.035) 50%,transparent 65%);pointer-events:none
+}
+.time-box:after{
+  content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(150,150,150,.22);box-shadow:0 0 8px rgba(0,0,0,.8);z-index:2
+}
+.time-number{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:Arial,Helvetica,sans-serif;font-size:clamp(75px,11vw,155px);line-height:1;font-weight:800;
+  letter-spacing:-6px;color:#f4f1f1;text-shadow:0 0 18px rgba(255,255,255,.08),0 0 28px rgba(180,0,20,.15)
+}
+.time-box .split{display:none}
+.time-label{margin-top:11px;font-size:clamp(10px,1.2vw,15px);letter-spacing:5px;color:#a9a0a0;font-weight:bold}
+#birthdayIntro{
+  display:none;font-size:clamp(42px,8vw,100px);font-weight:bold;color:#f4f1f1;
+  text-shadow:0 0 12px rgba(255,255,255,.35),0 0 35px rgba(210,0,30,.8),0 0 80px rgba(140,0,20,.65);
+  animation:birthdayPop 1s ease forwards;white-space:nowrap;letter-spacing:2px
+}
+.intro-date{margin-top:34px;font-size:clamp(11px,1.4vw,17px);letter-spacing:8px;color:#a9a0a0}
+.intro-ready{margin-top:25px;font-size:clamp(18px,2.5vw,30px);color:#ddd;font-style:italic;letter-spacing:2px}
+.intro-heartline{margin:14px auto 0;display:flex;align-items:center;justify-content:center;gap:14px;color:#9b0018;font-size:28px}
+.intro-heartline:before,.intro-heartline:after{content:"";height:1px;width:110px;background:linear-gradient(90deg,transparent,#a90018)}
+.intro-heartline:after{background:linear-gradient(90deg,#a90018,transparent)}
+@keyframes birthdayPop{0%{opacity:0;transform:scale(.65)}70%{opacity:1;transform:scale(1.07)}100%{transform:scale(1)}}
+
+#fireworks{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.firework{position:absolute;width:5px;height:5px;border-radius:50%;background:#f5e9e9;box-shadow:0 0 10px 3px #b3001b;animation:rocket 1s ease-out forwards}
+@keyframes rocket{0%{transform:translate(0,45vh);opacity:0}15%{opacity:1}100%{transform:translate(0,0);opacity:1}}
+.spark{position:absolute;width:4px;height:4px;border-radius:50%;background:#f5e9e9;box-shadow:0 0 9px 3px #c00020;animation:sparkFly 1.5s ease-out forwards}
+@keyframes sparkFly{from{transform:translate(0,0) scale(1);opacity:1}to{transform:translate(var(--x),var(--y)) scale(.15);opacity:0}}
+
+.wrap{width:min(1050px,100%);position:relative;z-index:3}
+.hero{text-align:center}
+.hero .mini{font-size:18px;color:#ffc7e9;letter-spacing:3px;margin-bottom:15px}
+.hero h1{font-size:clamp(48px,9vw,95px);text-shadow:0 0 25px #ff4da8;margin-bottom:20px}
+.hero p{font-size:20px;line-height:1.7;color:#f8dff0;max-width:700px;margin:0 auto 30px}
+.btn{
+  border:0;border-radius:999px;padding:15px 28px;cursor:pointer;
+  color:white;background:linear-gradient(135deg,#ff3d9d,#8e4dff);
+  box-shadow:0 0 25px rgba(255,64,166,.4);
+  transition:.3s;position:relative;overflow:hidden
+}
+.btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 0 35px rgba(255,64,166,.7)}
+.btn:active{transform:scale(.97)}
+
+.title{text-align:center;font-size:clamp(32px,5vw,58px);margin-bottom:45px;text-shadow:0 0 20px #ff4da8}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.card{
+  padding:30px 20px;text-align:center;border-radius:25px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,160,220,.22);
+  backdrop-filter:blur(10px);box-shadow:0 15px 50px rgba(0,0,0,.2);
+  transition:.35s
+}
+.card:hover{transform:translateY(-8px);background:rgba(255,255,255,.11)}
+.card .icon{font-size:45px;margin-bottom:15px}.card h3{margin-bottom:10px}.card p{color:#eacfe2;line-height:1.6}
+
+.letter-area{text-align:center}
+.envelope{
+  width:min(440px,90vw);height:275px;margin:auto;position:relative;cursor:pointer;
+  perspective:800px;transition:.4s
+}
+.env-body{position:absolute;inset:0;border-radius:12px;background:#f4c7dc;box-shadow:0 20px 55px rgba(0,0,0,.4);overflow:hidden}
+.env-body:before,.env-body:after{content:"";position:absolute;bottom:0;width:0;height:0;border-style:solid}
+.env-body:before{left:0;border-width:0 220px 145px 0;border-color:transparent transparent #eaa8c8 transparent}
+.env-body:after{right:0;border-width:145px 220px 0 0;border-color:#d98bb5 transparent transparent transparent}
+.flap{
+  position:absolute;z-index:4;left:0;top:0;width:0;height:0;
+  border-left:220px solid transparent;border-right:220px solid transparent;border-top:150px solid #f8d7e7;
+  transform-origin:top;transition:.8s
+}
+.envelope.open .flap{transform:rotateX(180deg)}
+.paper{
+  position:absolute;z-index:3;left:7%;top:18px;width:86%;height:235px;
+  padding:25px;background:#fff9fc;color:#5a2444;border-radius:8px;
+  transition:.8s;transform:translateY(50px);opacity:.1;text-align:left;line-height:1.65;overflow:auto
+}
+.envelope.open .paper{transform:translateY(-80px);opacity:1}
+.letter-hint{margin-top:100px;color:#f3c7df}
+
+.wall-section{background:linear-gradient(#20131e,#160d15)}
+.wall{
+  width:min(1000px,95vw);min-height:650px;border-radius:12px;position:relative;overflow:hidden;
+  background:
+    repeating-linear-gradient(0deg,rgba(0,0,0,.12) 0 2px,transparent 2px 45px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 2px,transparent 2px 65px),
+    linear-gradient(135deg,#55443f,#76645b 50%,#493b38);
+  box-shadow:0 25px 70px rgba(0,0,0,.5);border:10px solid #302522;
+}
+.wall:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.12),transparent 20%),linear-gradient(90deg,transparent,rgba(0,0,0,.12));pointer-events:none}
+.graffiti{
+  position:absolute;left:50%;top:22%;transform:translateX(-50%) rotate(-3deg);
+  font-family:"Arial Black",Impact,sans-serif;font-size:clamp(65px,12vw,140px);font-weight:900;
+  color:#ff557f;text-shadow:4px 5px 0 #291322,0 0 12px #ff4b8a;
+  -webkit-text-stroke:2px #ffd1e3;white-space:nowrap;z-index:2
+}
+.graffiti small{display:block;font-family:Georgia;font-size:18px;letter-spacing:5px;text-align:center;color:#ffe8f4;text-shadow:1px 1px 3px #222}
+.balloon{position:absolute;width:70px;height:88px;border-radius:50% 50% 45% 45%;z-index:4;box-shadow:inset -12px -10px 15px rgba(0,0,0,.18),0 8px 20px rgba(0,0,0,.2)}
+.balloon:after{content:"";position:absolute;width:2px;height:100px;background:rgba(30,20,30,.5);left:50%;top:84px}
+.balloon:before{content:"";position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);border-left:5px solid transparent;border-right:5px solid transparent;border-top:9px solid currentColor}
+.b1{background:#ff405e;color:#ff405e;left:8%;top:16%;transform:rotate(-12deg)}
+.b2{background:#ffd34d;color:#ffd34d;left:18%;top:8%;transform:rotate(8deg)}
+.b3{background:#55d8ff;color:#55d8ff;right:18%;top:9%;transform:rotate(-7deg)}
+.b4{background:#a96cff;color:#a96cff;right:7%;top:19%;transform:rotate(12deg)}
+.b5{background:#ff71b8;color:#ff71b8;left:31%;top:7%;transform:rotate(-5deg)}
+.b6{background:#6be38b;color:#6be38b;right:32%;top:8%;transform:rotate(5deg)}
+.heart-balloon{width:85px;height:78px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#e92f58;left:43%;top:18%;z-index:3;box-shadow:inset -10px -7px 15px rgba(0,0,0,.2)}
+.heart-balloon:after{transform:rotate(45deg);height:85px;top:70px}
+.heart-balloon:before{transform:translateX(-50%) rotate(45deg);bottom:-3px}
+.ac-balloon{
+  position:absolute;bottom:22%;left:50%;transform:translateX(-50%);
+  display:flex;gap:35px;z-index:5
+}
+.ac-balloon span{
+  font-family:"Arial Black";font-size:clamp(60px,9vw,105px);color:#ffdf59;
+  text-shadow:5px 5px 0 #4d1928,0 0 18px rgba(255,210,80,.5);
+  position:relative
+}
+.ac-balloon span:first-child:after{content:"";position:absolute;width:2px;height:100px;background:#4d3430;left:50%;top:100%}
+.ac-balloon span:last-child{color:#ff71b8}
+.wall-caption{
+  position:absolute;bottom:8%;left:50%;transform:translateX(-50%);
+  font-size:20px;letter-spacing:2px;color:#fff1f7;z-index:6;text-shadow:0 2px 5px #222;white-space:nowrap
+}
+
+.cake-section{text-align:center}
+.cake-wrap{position:relative;width:390px;max-width:90vw;margin:30px auto 60px}
+.cake{
+  position:relative;height:220px;margin-top:110px;
+  filter:drop-shadow(0 20px 25px rgba(0,0,0,.35))
+}
+.layer{position:absolute;left:5%;width:90%;height:75px;border-radius:15px;background:linear-gradient(#ffb2cf,#d95391);box-shadow:inset 0 -12px 0 rgba(100,20,60,.15)}
+.layer.one{bottom:0}.layer.two{bottom:55px;width:82%;left:9%;background:linear-gradient(#ffd0df,#ef75ab)}
+.frost{position:absolute;bottom:118px;left:9%;width:82%;height:28px;border-radius:50%;background:#fff3f7;box-shadow:0 5px 10px rgba(0,0,0,.15)}
+.drip{position:absolute;width:18px;height:35px;border-radius:0 0 15px 15px;background:#fff3f7;top:15px}
+.drip:nth-child(1){left:15%}.drip:nth-child(2){left:35%;height:48px}.drip:nth-child(3){left:58%;height:40px}.drip:nth-child(4){left:78%;height:30px}
+.candles{position:absolute;bottom:132px;left:50%;transform:translateX(-50%);display:flex;gap:18px;z-index:5}
+.candle{width:15px;height:85px;border-radius:4px;background:repeating-linear-gradient(135deg,#fff 0 7px,#ff62a6 7px 14px);position:relative}
+.flame{position:absolute;left:50%;top:-29px;transform:translateX(-50%);width:18px;height:27px;background:#ffd35a;border-radius:50% 50% 50% 50%;box-shadow:0 0 12px 5px #ff9b39;animation:flicker .15s infinite alternate}
+@keyframes flicker{from{transform:translateX(-50%) scale(.9) rotate(-3deg)}to{transform:translateX(-50%) scale(1.08) rotate(3deg)}}
+.candle.out .flame{display:none}
+.cake-note{color:#f5d9e9;margin-top:15px}
+.mic-status{margin:20px auto;max-width:650px;color:#f8d9eb;line-height:1.6}
+#micButton{margin:8px}
+.slice{
+  position:fixed;z-index:8000;left:50%;top:58%;width:160px;height:120px;
+  background:linear-gradient(#ffc1d8,#e8669e);border-radius:12px 12px 22px 22px;
+  transform:translate(-50%,-50%) scale(.1) rotate(-8deg);opacity:0;pointer-events:none;
+  box-shadow:0 20px 50px rgba(0,0,0,.5);transition:1.5s cubic-bezier(.2,.8,.2,1)
+}
+.slice:before{content:"";position:absolute;left:10px;right:10px;top:-18px;height:30px;border-radius:50%;background:#fff5f8}
+.slice.show{opacity:1;transform:translate(-50%,-50%) scale(1.8) rotate(4deg)}
+.slice-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;color:#6e1d49;font-weight:bold;font-size:15px;padding:20px;z-index:2}
+.slice.hide{opacity:0;transform:translate(-50%,-50%) scale(3) rotate(10deg)}
+
+.gift{text-align:center}
+.gift-box{font-size:130px;cursor:pointer;display:inline-block;animation:giftFloat 2s infinite ease-in-out;filter:drop-shadow(0 15px 20px rgba(0,0,0,.3))}
+@keyframes giftFloat{50%{transform:translateY(-12px) rotate(2deg)}}
+.surprise{max-width:700px;margin:25px auto 0;font-size:21px;line-height:1.8;color:#f9dfed;min-height:50px}
+
+.count-section{text-align:center}
+.old-count{font-size:clamp(45px,7vw,80px);font-weight:bold;color:#ffd1ea;text-shadow:0 0 25px #ff4da8}
+.count-label{color:#dcb8d0;margin-top:15px}
+
+.final{text-align:center;min-height:85vh}
+.final-heart{font-size:100px;animation:heartbeat 1.2s infinite}
+@keyframes heartbeat{50%{transform:scale(1.13)}}
+.final h2{font-size:clamp(40px,7vw,75px);margin:15px 0 25px;text-shadow:0 0 25px #ff4da8}
+.final-message{max-width:760px;margin:auto;color:#f7dce9;font-size:21px;line-height:2}
+
+.hidden-menu{
+  position:fixed;right:18px;bottom:18px;z-index:5000;
+  width:42px;height:42px;border:0;border-radius:50%;
+  background:rgba(255,102,174,.12);color:#ffb4d7;font-size:21px;cursor:pointer;
+  backdrop-filter:blur(8px);transition:.3s
+}
+.hidden-menu:hover{background:rgba(255,102,174,.3);transform:scale(1.1)}
+.menu-panel{
+  position:fixed;right:18px;bottom:70px;z-index:4999;
+  padding:12px;border-radius:18px;background:rgba(29,9,40,.92);border:1px solid #813d68;
+  backdrop-filter:blur(15px);opacity:0;visibility:hidden;transform:translateY(10px);transition:.3s
+}
+.menu-panel.show{opacity:1;visibility:visible;transform:none}
+.menu-panel button{display:block;border:0;background:none;color:#f9d5e8;padding:9px 15px;cursor:pointer;border-radius:10px}
+.menu-panel button:hover{background:rgba(255,100,180,.13)}
+
+
+.photo-frames{
+  position:absolute;
+  inset:0;
+  z-index:7;
+  pointer-events:none;
+}
+.photo-frame{
+  position:absolute;
+  width:205px;
+  height:245px;
+  padding:10px 10px 38px;
+  background:#fff8f3;
+  box-shadow:0 12px 28px rgba(0,0,0,.42);
+  pointer-events:auto;
+  cursor:pointer;
+  transition:.35s;
+}
+.photo-frame:hover{transform:scale(1.04) rotate(0deg)!important;z-index:20}
+.photo-frame.left{left:7%;bottom:9%;transform:rotate(-7deg)}
+.photo-frame.right{right:7%;bottom:9%;transform:rotate(6deg)}
+.photo-preview{
+  width:100%;
+  height:185px;
+  object-fit:cover;
+  display:block;
+  background:
+    linear-gradient(135deg,rgba(255,105,170,.15),rgba(130,80,255,.15)),
+    repeating-linear-gradient(45deg,#eee 0 8px,#f8f8f8 8px 16px);
+  border:1px solid #eadbd8;
+}
+.photo-frame label{
+  position:absolute;
+  left:10px;right:10px;bottom:8px;
+  text-align:center;
+  color:#573543;
+  font-size:13px;
+  font-family:Georgia,"Times New Roman",serif;
+  cursor:pointer;
+}
+.photo-frame input{display:none}
+.photo-frame .plus{
+  position:absolute;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  font-size:42px;color:#d95b91;
+  text-shadow:0 2px 5px rgba(0,0,0,.15);
+  pointer-events:none;
+}
+.photo-frame.has-photo .plus{display:none}
+
+.photo-modal{
+  position:fixed;inset:0;z-index:10000;
+  display:flex;align-items:center;justify-content:center;
+  padding:25px;background:rgba(5,2,10,.82);
+  backdrop-filter:blur(8px);
+  opacity:0;visibility:hidden;transition:.3s;
+}
+.photo-modal.show{opacity:1;visibility:visible}
+.photo-modal img{
+  max-width:min(850px,90vw);max-height:85vh;
+  object-fit:contain;
+  border:12px solid #fff8f3;
+  box-shadow:0 25px 80px rgba(0,0,0,.7);
+}
+.photo-modal-close{
+  position:absolute;right:25px;top:20px;
+  width:45px;height:45px;border:0;border-radius:50%;
+  background:rgba(255,255,255,.16);color:white;font-size:28px;
+  cursor:pointer;
+}
+
+@media(max-width:600px){.flip-countdown{gap:8px}.time-box{height:115px;border-radius:10px}.time-number{font-size:clamp(46px,16vw,82px);letter-spacing:-4px}.time-box .split{height:3px}.time-label{font-size:9px;letter-spacing:2px}.intro-small{letter-spacing:2px}}
+@media(max-width:750px){
+ .cards{grid-template-columns:1fr 1fr}
+ .wall{min-height:520px}
+ .balloon{width:52px;height:68px}
+ .ac-balloon{bottom:25%;gap:20px}
+ .wall-caption{font-size:14px}
+ .graffiti{top:27%}
+ .candles{gap:10px}
+}
+@media(max-width:480px){
+ .cards{grid-template-columns:1fr}
+ .paper{font-size:13px}
+ #birthdayIntro{white-space:normal;padding:0 15px}
+}
+
+/* ===== A♡C RED / BLACK / YELLOW THEME ===== */
+:root{--red:#b40018;--red2:#e00024;--yellow:#f2c230;--black:#070707;--cream:#f4eee7;--muted:#aaa3a0}
+body{
+  color:var(--cream);
+  background:
+    radial-gradient(circle at 50% 0%,rgba(180,0,24,.18),transparent 28%),
+    radial-gradient(circle at 85% 70%,rgba(242,194,48,.055),transparent 25%),
+    linear-gradient(135deg,#050505,#120708 48%,#050505);
+}
+.star{background:#f2c230}
+.hero .mini{color:#f2c230;letter-spacing:4px;text-transform:uppercase}
+.hero h1,.title{color:#f4eee7;text-shadow:0 0 18px rgba(224,0,36,.55),0 0 42px rgba(180,0,24,.22)}
+.hero p,.card p,.final-message,.surprise,.mic-status{color:#d8d0ca}
+.btn{color:#090909;background:linear-gradient(135deg,#f2c230,#e00024);box-shadow:0 0 25px rgba(224,0,36,.28);font-weight:800;letter-spacing:.5px}
+.btn:hover{box-shadow:0 0 35px rgba(242,194,48,.32)}
+.cards{gap:18px}
+.card{background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(180,0,24,.06));border:1px solid rgba(242,194,48,.18);border-radius:8px;box-shadow:0 15px 50px rgba(0,0,0,.4)}
+.card:hover{background:linear-gradient(145deg,rgba(242,194,48,.08),rgba(180,0,24,.10));border-color:rgba(242,194,48,.35)}
+.card .icon{filter:grayscale(.15) saturate(1.15)}
+.section-kicker{font-family:Arial,Helvetica,sans-serif;text-align:center;color:#f2c230;font-size:11px;letter-spacing:5px;font-weight:800;margin-bottom:12px;opacity:.9}
+.industrial-strip{display:flex;align-items:center;justify-content:center;gap:14px;margin:28px auto 18px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:3px;color:#f2c230;opacity:.9}
+.industrial-strip i{width:70px;height:2px;background:linear-gradient(90deg,transparent,#b40018);display:block}.industrial-strip i:nth-of-type(2){background:linear-gradient(90deg,#b40018,transparent)}
+.industrial-strip b{color:#e00024;font-size:15px}
+.signal-row{display:flex;align-items:center;justify-content:center;gap:22px;color:#e00024;margin:-12px auto 28px;font-family:Arial,Helvetica,sans-serif;font-weight:900;letter-spacing:5px}
+.signal-row .eq{color:#f2c230;letter-spacing:2px;text-shadow:0 0 10px rgba(242,194,48,.3)}
+.wall-section{background:linear-gradient(#100707,#060606)}
+.wall{background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 2px,transparent 2px 45px),repeating-linear-gradient(90deg,rgba(242,194,48,.025) 0 2px,transparent 2px 65px),linear-gradient(135deg,#171515,#24201d 50%,#0b0b0b);border-color:#171313}
+.wall:after{background:radial-gradient(circle at 30% 20%,rgba(242,194,48,.06),transparent 20%),linear-gradient(90deg,transparent,rgba(180,0,24,.08))}
+.graffiti{color:#e00024;text-shadow:4px 5px 0 #080808,0 0 12px rgba(224,0,36,.55);-webkit-text-stroke:2px #f2c230}
+.graffiti small{color:#f2c230}
+.balloon.b1{background:#e00024;color:#e00024}.balloon.b2{background:#f2c230;color:#f2c230}.balloon.b3{background:#171717;color:#171717}.balloon.b4{background:#b40018;color:#b40018}.balloon.b5{background:#f2c230;color:#f2c230}.balloon.b6{background:#242424;color:#242424}
+.heart-balloon{background:#e00024}
+.ac-balloon span{color:#f2c230;text-shadow:5px 5px 0 #080808,0 0 18px rgba(242,194,48,.35)}
+.ac-balloon span:last-child{color:#e00024}
+.wall-caption{color:#f4eee7}
+.envelope{filter:drop-shadow(0 15px 35px rgba(0,0,0,.45))}
+.env-body{background:#5d0b12}.env-body:before{border-color:transparent transparent #7b0d18 transparent}.env-body:after{border-color:#3a080c transparent transparent transparent}.flap{border-top-color:#8d111b}
+.paper{background:#eee8df;color:#241416}.letter-hint{color:#f2c230}
+.cake .layer{background:linear-gradient(#9d1828,#520b13)}.cake .layer.two{background:linear-gradient(#c02a2f,#6f0c14)}.frost,.drip{background:#e9e1d7}
+.candle{background:repeating-linear-gradient(135deg,#1a1a1a 0 7px,#f2c230 7px 14px)}
+.flame{background:#f2c230;box-shadow:0 0 12px 5px #e00024}
+.slice{background:linear-gradient(#c52a33,#650c14)}.slice:before{background:#eee8df}.slice-text{color:#f2c230}
+.gift-box{filter:drop-shadow(0 15px 20px rgba(0,0,0,.5)) saturate(.9)}
+.old-count{color:#f2c230;text-shadow:0 0 25px rgba(242,194,48,.35)}
+.count-label{color:#b9b1aa}
+.final-heart{filter:drop-shadow(0 0 16px rgba(224,0,36,.45))}.final h2{text-shadow:0 0 25px rgba(224,0,36,.6)}
+.hidden-menu{background:rgba(180,0,24,.15);color:#f2c230;border:1px solid rgba(242,194,48,.18)}
+.hidden-menu:hover{background:rgba(224,0,36,.25)}
+.menu-panel{background:rgba(10,7,7,.95);border-color:#6e1018}.menu-panel button{color:#eee8df}.menu-panel button:hover{background:rgba(242,194,48,.09)}
+.photo-frame{border-color:#f2c230!important;background:#0d0d0d!important}.photo-frame label{color:#f2c230!important}.photo-frame .plus{color:#e00024!important}
+@media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}.industrial-strip{gap:8px}.industrial-strip i{width:35px}.signal-row{font-size:12px;gap:10px}}
+@media(max-width:520px){.cards{grid-template-columns:1fr}.industrial-strip{font-size:9px;letter-spacing:2px}.signal-row{display:none}}
+</style>
+</head>
+<body class="intro-active">
+
+<div id="intro">
+  <div id="fireworks"></div>
+  <div class="intro-content">
+    <div class="intro-small" id="introSmall">Küçük bir sürpriz</div>
+    <div class="count-title" id="countTitle">SÜRPRİZE KALAN SÜRE</div>
+    <div class="flip-countdown" id="flipCountdown">
+      <div><div class="time-box"><div class="time-number" id="hours">00</div></div><div class="time-label">SAAT</div></div>
+      <div><div class="time-box"><div class="time-number" id="minutes">00</div></div><div class="time-label">DAKİKA</div></div>
+      <div><div class="time-box"><div class="time-number" id="seconds">05</div></div><div class="time-label">SANİYE</div></div>
+    </div>
+    <div class="intro-ready" id="introReady">Hazır mısın?</div>
+    <div class="intro-heartline">♥</div>
+    <div class="intro-date">04 EKİM 2026</div>
+    <div id="birthdayIntro">İYİ Kİ DOĞDUN ❤️</div>
+  </div>
+</div>
+
+<div class="stars" id="stars"></div>
+
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="mini">SENİN İÇİN</div>
+    <h1>İyi ki Doğdun ❤️</h1>
+    <p>
+      Bazı insanlar hayatımıza girer ve her şeyi biraz daha güzel yapar.
+      Sen de benim için tam olarak öylesin. Bu küçük site, sana söylemek
+      istediğim kocaman şeylerin minicik bir parçası. 🩷
+    </p>
+    <div class="industrial-strip" aria-hidden="true">
+      <span>ON AIR</span><i></i><b>love</b><i></i><span>PROGRAMMER</span>
+    </div>
+    <button class="btn" onclick="scrollToLove()">Sürprize Başla ✦</button>
+  </div>
+</section>
+
+<section id="love">
+  <div class="wrap">
+    <h2 class="title">Seninle ilgili sevdiğim şeyler ❤️</h2>
+    <div class="signal-row" aria-hidden="true"><span>///</span><span class="eq">▂ ▄ ▆ ▄ ▂ ▆ ▃ ▅</span><span>///</span></div>
+    <div class="cards">
+      <div class="card"><div class="icon">😊</div><h3>Gülüşün</h3><p>Güldüğünde içinde oluşan güven duygusu verdigin o huzur dünyadaki bir çok seye bedel.</p></div>
+      <div class="card"><div class="icon">🫶</div><h3>Varlığın</h3><p>Yanımda olman, bazen hiçbir şey söylemeden bile iyi hissetiriyor her anımı seninle geçirmek istiyorum .</p></div>
+      <div class="card"><div class="icon">💗</div><h3>Kalbin</h3><p>İçindeki o güzel tarafı, sana her baktığımda yeniden fark ediyorum ve bu o kadar güzel kı .</p></div>
+      <div class="card"><div class="icon">♾️</div><h3>Biz</h3><p>Her şeye rağmen birbirimize döndüğümüz o güzel “biz” duygusu.❤️</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="wall-section" id="wall">
+  <div class="wrap">
+    <div class="section-kicker">INDUSTRIAL NIGHT • OUR LITTLE WORLD</div>
+    <h2 class="title">Bu duvarın bir hikâyesi var… ❤️</h2>
+
+    <div class="wall">
+      <div class="balloon b1"></div>
+      <div class="balloon b2"></div>
+      <div class="balloon b3"></div>
+      <div class="balloon b4"></div>
+      <div class="balloon b5"></div>
+      <div class="balloon b6"></div>
+      <div class="heart-balloon"></div>
+
+      <div class="photo-frames">
+
+        <div class="photo-frame left" id="frame1">
+          <img
+            class="photo-preview"
+            src="image/resim1.jpeg"
+            alt="Birlikte çizdiğiniz ilk anı"
+          >
+          <label>Bizim çizdiğimiz… ❤️</label>
+        </div>
+
+        <div class="photo-frame right" id="frame2">
+          <img
+            class="photo-preview"
+            src="image/resim2.jpeg"
+            alt="Birlikte çizdiğiniz ikinci anı"
+          >
+          <label>Bir başka güzel anımız… ♡</label>
+        </div>
+
+      </div>
+
+      <div class="graffiti">
+        A♡C
+        <small>bizim küçük dünyamız</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="letter">
+  <div class="wrap letter-area">
+    <div class="section-kicker">KALBİMİN İÇİNDEN // FİLTRE YOK</div>
+    <h2 class="title">Sana söylemek istediğim bir şey var… ❤️</h2>
+    <div class="envelope" onclick="openLetter()">
+      <div class="env-body"></div>
+      <div class="paper">
+        <h3 style="margin-bottom:12px;">Paşama, ❤️</h3>
+        <p>
+          İyi ki doğdun sevgilim. Hayatımda olduğun için gerçekten çok mutluyum.
+          Bazen kelimeler ne kadar çok şey anlatmaya çalışsam da yetmiyor.
+          Seninle konuştuğum, güldüğüm, saçma sapan şeylere bile beraber güldüğümüz
+          her an benim için ayrı bir yerde.
+        </p>
+        <p>
+          Belki bazı zammanlar birbirimizi anlayamadıgımız zamanlar oluyor
+          bazen bu durumlar kırıcı ola biliyor ama her ne olursa olsun 
+          seninle birlikte olmak ve bu hayatta yanımda oldugunu görmek çok hoşuma gidiyor.
+          Ne yaşanırsa yaşansın hep geri döndüğümüz yer tabiki olalaım ama hiç ayrıda düşmeyelim
+          yanımda olmandan senıne vakıt gecırmekten ve konusmayı cok sevıyorum hep uyanında olmak 
+          istiyorum seninle bir seyler yapmak istiyorum en sacma seylerı bıle beraber yapmayı sevıyorum.
+          Örnegin birlikte bakim yapmayı, oyun oynamayı, ders çalısmayı, film izlemeyı 
+          yemek yapmayı ve daha birçok şeyi seninle yapmaktan mutluluk duyuyorum.
+          Umarim sende benim kaadar bu durumdan hoşlanıyorsundur.
+        </p>
+        <p>
+          Sen bunları okurken yuksek ıhtımalle sabırsızlıkla ve utanarak beklıyor olucagım...
+        </p>
+        <p style="margin-top:12px;">
+          Umarım yeni yaşın sana kalbinin istediği güzellikleri getirir.
+          Ve umarım ben de o güzelliklerin arasında hep yanında olurum.
+          İyi ki varsın. Seni çok seviyorum. ❤️
+        </p>
+      </div>
+      <div class="flap"></div>
+    </div>
+    <div class="letter-hint">Mektubu açmak için zarfa dokun… ❤️</div>
+  </div>
+</section>
+
+<section id="cake" class="cake-section">
+  <div class="wrap">
+    <div class="section-kicker">IŞIKLARI KAPAT • BİR DİLEK TUT</div>
+    <h2 class="title">Şimdi bir dilek tut… 🎂</h2>
+    <div class="cake-wrap">
+      <div class="cake">
+        <div class="candles">
+          <div class="candle"><div class="flame"></div></div>
+          <div class="candle"><div class="flame"></div></div>
+          <div class="candle"><div class="flame"></div></div>
+          <div class="candle"><div class="flame"></div></div>
+          <div class="candle"><div class="flame"></div></div>
+        </div>
+        <div class="layer one"></div>
+        <div class="layer two"></div>
+        <div class="frost">
+          <div class="drip"></div><div class="drip"></div><div class="drip"></div><div class="drip"></div>
+        </div>
+      </div>
+    </div>
+    <p class="mic-status" id="micStatus">
+      Mumları söndürmek için mikrofonunu aç. 🎤<br>
+      Sonra bilgisayarın mikrofonuna doğru kısa ve belirgin bir şekilde üfle.
+    </p>
+    <button class="btn" id="micButton" onclick="startMicrophone()">🎤 Mikrofonu Aç</button>
+    <button class="btn" onclick="blowCandles(true)">🕯️ Üfledin Sayıyorum Paşam! ❤️</button>
+  </div>
+</section>
+
+<div class="slice" id="slice">
+  <div class="slice-text">En güzel dilim<br>paşamaa❤️</div>
+</div>
+
+<section id="gift" class="gift">
+  <div class="wrap">
+    <div class="section-kicker">ONE MORE THING…</div>
+    <h2 class="title">Bir tane daha var… 🎁</h2>
+    <div class="gift-box" onclick="openGift()">🎁</div>
+    <div class="surprise" id="surprise"></div>
+  </div>
+</section>
+
+<section class="count-section" id="count">
+  <div class="wrap">
+    <div class="section-kicker">PLAY • PAUSE • REPEAT</div>
+    <h2 class="title">Zaman geçiyor ama… ⏳</h2>
+    <div class="old-count" id="countdown">❤️</div>
+    <div class="count-label">Sana ayrılan güzel anların sayısı hiç bitmesin.</div>
+  </div>
+</section>
+
+<section class="final" id="final">
+  <div class="wrap">
+    <div class="final-heart">❤️</div>
+    <h2>İyi ki doğdun.</h2>
+    <p class="final-message">
+      Bugün sadece doğduğun gün değil. Benim için, senin bu dünyaya geldiğin
+      ve yıllar sonra yollarımızın kesişmesini mümkün kılan o güzel gün.
+      Hayatın boyunca kaç yaşına gelirsen gel, umarım içinde seni sen yapan
+      o güzel tarafı hiç kaybetmezsin. Yorulduğunda yamacima gelip dinlenebilirsin sevdiğim,
+      sevindiğinde paylaşa bilirsin, kötü gününde de elini elini sımsıkı tutacagim ve 
+      seni hiç bırakmayacagım.
+      <br><br>
+      Benim hayatımda olduğun için, beraber biriktirdiğimiz bütün anılar için,
+      bana kattığın bütün güzellikler için teşekkür ederim.
+      Yeni yaşın kutlu olsun paşam. ❤️
+      <br><br>
+      <strong>İyi ki varsın. İyi ki doğdun. İyi ki “biz” olduk. ♡</strong>
+    </p>
+  </div>
+</section>
+
+
+<div class="photo-modal" id="photoModal" onclick="closePhotoModal(event)">
+  <button class="photo-modal-close" onclick="closePhotoModal(event)">×</button>
+  <img id="modalPhoto" src="" alt="Büyütülmüş anı">
+</div>
+
+<button class="hidden-menu" onclick="toggleMenu()" aria-label="Menü">♡</button>
+<div class="menu-panel" id="menuPanel">
+  <button onclick="go('top')">Başlangıç</button>
+  <button onclick="go('love')">Sen ve ben</button>
+  <button onclick="go('wall')">A♡C</button>
+  <button onclick="go('letter')">Mektup</button>
+  <button onclick="go('cake')">Pasta</button>
+  <button onclick="go('gift')">Hediye</button>
+  <button onclick="go('final')">Son</button>
+</div>
+
+<script>
+const stars=document.getElementById("stars");
+for(let i=0;i<130;i++){
+  const s=document.createElement("span");
+  s.className="star";
+  s.style.left=Math.random()*100+"%";
+  s.style.top=Math.random()*100+"%";
+  s.style.animationDelay=Math.random()*2+"s";
+  s.style.opacity=Math.random();
+  stars.appendChild(s);
+}
+
+function createHeart(){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.textContent=["❤","♡","🩷","💗","💖"][Math.floor(Math.random()*5)];
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=(12+Math.random()*22)+"px";
+  h.style.animationDuration=(5+Math.random()*4)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),9000);
+}
+setInterval(createHeart,700);
+
+function scrollToLove(){document.getElementById("love").scrollIntoView({behavior:"smooth"})}
+function openLetter(){document.querySelector(".envelope").classList.toggle("open")}
+function go(id){document.getElementById(id).scrollIntoView({behavior:"smooth"});toggleMenu(false)}
+function toggleMenu(force){
+  const p=document.getElementById("menuPanel");
+  if(force===false)p.classList.remove("show"); else p.classList.toggle("show");
+}
+function makeHearts(amount=20){
+  for(let i=0;i<amount;i++)setTimeout(createHeart,i*70);
+}
+
+function openGift(){
+  const box=document.getElementById("surprise");
+  box.innerHTML="Senin için hazırladığım bu küçücük şeyin arkasında kocaman bir sevgi var. 🩷<br><br>Şimdiye kadar olan her güzel an için ve bundan sonra yaşayacağımız nice güzel an için… iyi ki sen.";
+  makeHearts(35);
+}
+
+let micStream=null,audioContext=null,analyser=null,micData=null,micRunning=false,lastBlow=0;
+
+async function startMicrophone(){
+  const status=document.getElementById("micStatus");
+  try{
+    if(micRunning){
+      status.innerHTML="Mikrofon zaten açık. 🎤 Şimdi bilgisayarın mikrofonuna doğru üfle.";
+      return;
+    }
+    micStream=await navigator.mediaDevices.getUserMedia({audio:true});
+    audioContext=new (window.AudioContext||window.webkitAudioContext)();
+    const source=audioContext.createMediaStreamSource(micStream);
+    analyser=audioContext.createAnalyser();
+    analyser.fftSize=1024;
+    analyser.smoothingTimeConstant=.35;
+    source.connect(analyser);
+    micData=new Uint8Array(analyser.fftSize);
+    micRunning=true;
+    document.getElementById("micButton").textContent="🎤 Mikrofon Açık";
+    status.innerHTML="Mikrofon hazır. 🩷<br>Şimdi bilgisayarın mikrofonuna doğru kısa ve belirgin bir şekilde üfle!";
+    listenForBlow();
+  }catch(err){
+    status.innerHTML="Mikrofona erişemedim. Tarayıcı izin isterse <b>İzin Ver</b>'e bas. Eğer dosya olarak açınca izin vermiyorsa Chrome/Edge ile tekrar dene. 🩷";
+  }
+}
+
+function listenForBlow(){
+  if(!micRunning)return;
+  analyser.getByteTimeDomainData(micData);
+  let sum=0;
+  for(let i=0;i<micData.length;i++){
+    const v=(micData[i]-128)/128;
+    sum+=v*v;
+  }
+  const rms=Math.sqrt(sum/micData.length);
+  const now=Date.now();
+  if(rms>.20 && now-lastBlow>1800){
+    lastBlow=now;
+    blowCandles(false);
+  }
+  requestAnimationFrame(listenForBlow);
+}
+
+let candlesBlown=false;
+function blowCandles(manual=false){
+  if(candlesBlown)return;
+  candlesBlown=true;
+  document.querySelectorAll(".candle").forEach((c,i)=>setTimeout(()=>c.classList.add("out"),i*100));
+  document.getElementById("micStatus").innerHTML="🎉 MUMLAR SÖNDÜ! İYİ Kİ DOĞDUN PAŞAMMMM! 🩷";
+  makeHearts(45);
+  launchFireworks(18);
+  setTimeout(showSlice,900);
+}
+
+function showSlice(){
+  const slice=document.getElementById("slice");
+  slice.classList.add("show");
+  setTimeout(()=>slice.classList.add("hide"),3200);
+  setTimeout(()=>slice.classList.remove("show","hide"),4800);
+}
+
+function launchFireworks(count=14){
+  const layer=document.getElementById("fireworks");
+  for(let i=0;i<count;i++){
+    setTimeout(()=>{
+      const x=10+Math.random()*80,y=10+Math.random()*55;
+      const f=document.createElement("div");
+      f.className="firework";
+      f.style.left=x+"%";f.style.top="75%";
+      f.style.transform=`translate(${(x-50)*.1}vw,${(y-75)*.7}vh)`;
+      layer.appendChild(f);
+      setTimeout(()=>{
+        for(let j=0;j<30;j++){
+          const s=document.createElement("i");
+          s.className="spark";
+          s.style.left=x+"%";s.style.top=y+"%";
+          const a=(Math.PI*2*j)/30;
+          const r=50+Math.random()*100;
+          s.style.setProperty("--x",Math.cos(a)*r+"px");
+          s.style.setProperty("--y",Math.sin(a)*r+"px");
+          layer.appendChild(s);
+          setTimeout(()=>s.remove(),1600);
+        }
+        f.remove();
+      },850);
+    },i*160);
+  }
+}
+
+function introFireworks(){
+  const layer=document.getElementById("fireworks");
+  for(let i=0;i<22;i++){
+    setTimeout(()=>{
+      const x=5+Math.random()*90,y=10+Math.random()*55;
+      for(let j=0;j<38;j++){
+        const s=document.createElement("i");
+        s.className="spark";
+        s.style.left=x+"%";s.style.top=y+"%";
+        const a=(Math.PI*2*j)/38;
+        const r=50+Math.random()*150;
+        s.style.setProperty("--x",Math.cos(a)*r+"px");
+        s.style.setProperty("--y",Math.sin(a)*r+"px");
+        s.style.animationDuration=(1.1+Math.random()*.7)+"s";
+        layer.appendChild(s);
+        setTimeout(()=>s.remove(),2000);
+      }
+    },i*120);
+  }
+}
+
+function startIntro(){
+  const intro=document.getElementById("intro");
+  const small=document.getElementById("introSmall");
+  const title=document.getElementById("countTitle");
+  const countdown=document.getElementById("flipCountdown");
+  const birthday=document.getElementById("birthdayIntro");
+  const ready=document.getElementById("introReady");
+  const sec=document.getElementById("seconds");
+  let remaining=5;
+  sec.textContent="05";
+
+  const timer=setInterval(()=>{
+    remaining--;
+    if(remaining>0){
+      sec.textContent=String(remaining).padStart(2,"0");
+      sec.animate([
+        {transform:"scale(1.08)",opacity:.65},
+        {transform:"scale(1)",opacity:1}
+      ],{duration:360,easing:"ease-out"});
+      return;
+    }
+
+    clearInterval(timer);
+    sec.textContent="00";
+    countdown.style.transition="opacity .45s ease, transform .45s ease";
+    countdown.style.opacity="0";
+    countdown.style.transform="scale(.94)";
+    small.style.opacity="0";
+    title.style.opacity="0";
+    ready.style.opacity="0";
+    document.querySelector(".intro-heartline").style.opacity="0";
+    document.querySelector(".intro-date").style.opacity="0";
+
+    setTimeout(()=>{
+      countdown.style.display="none";
+      small.style.display="none";
+      title.style.display="none";
+      ready.style.display="none";
+      document.querySelector(".intro-heartline").style.display="none";
+      document.querySelector(".intro-date").style.display="none";
+      birthday.style.display="block";
+      introFireworks();
+    },450);
+
+    setTimeout(()=>intro.classList.add("hide"),2500);
+    setTimeout(()=>document.body.classList.remove("intro-active"),3400);
+  },1000);
+}
+
+startIntro();
+
+function setupPhotoInput(inputId, previewId, frameId){
+  const input=document.getElementById(inputId);
+  const preview=document.getElementById(previewId);
+  const frame=document.getElementById(frameId);
+
+  input.addEventListener("change",function(){
+    const file=this.files && this.files[0];
+    if(!file)return;
+    if(!file.type.startsWith("image/"))return;
+
+    const reader=new FileReader();
+    reader.onload=function(e){
+      preview.src=e.target.result;
+      frame.classList.add("has-photo");
+    };
+    reader.readAsDataURL(file);
+  });
+
+  preview.addEventListener("click",function(e){
+    if(!preview.src || preview.src==="")return;
+    e.stopPropagation();
+    document.getElementById("modalPhoto").src=preview.src;
+    document.getElementById("photoModal").classList.add("show");
+  });
+}
+
+setupPhotoInput("photoInput1","photoPreview1","frame1");
+setupPhotoInput("photoInput2","photoPreview2","frame2");
+
+function closePhotoModal(e){
+  if(e && e.target && e.target.id==="modalPhoto")return;
+  if(e) e.stopPropagation();
+  document.getElementById("photoModal").classList.remove("show");
+}
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape")document.getElementById("photoModal").classList.remove("show");
+});
+
+function updateCountdown(){
+  const el=document.getElementById("countdown");
+  // Site is a birthday surprise, so this section remains decorative rather than counting to an old date.
+  el.innerHTML="🎂 ❤️ 🎉";
+}
+updateCountdown();
+</script>
+</body>
+</html>
